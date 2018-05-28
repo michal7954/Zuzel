@@ -3,8 +3,9 @@ var game = {
     add: function (i) {
         this.collection.push(new _Player(i));
     },
-    step: 6, //prędkość
-    promien: 3, //promień skrętu
+    // SETTINGS
+    step: 4, //prędkość
+    promien: 2, //promień skrętu
     w: 50, // 60 - drift | 30 - środek geometryczny
     h: 23,
     count: 4, //liczba graczy
@@ -110,16 +111,16 @@ document.addEventListener("DOMContentLoaded", function (e) {
         ending();
     }
 
-    while (!(players == 2 || players == 3 || players == 4)) {
-        var players = prompt("Podaj liczbę graczy (2-4)", 4);
+    while (!(players == 1 || players == 2 || players == 3 || players == 4)) {
+        var players = prompt("Podaj liczbę graczy (1-4)", 4);
     }
     game.count = players;
 
-    var wiersz = "<tr><td class='number'></td><td class='control'></td><td class='color'></td><td class='lap'></td><td class='stan'></td><td class='deklaracja'>NO</td></tr>"
-    var znacznik = document.getElementById("table");
+    var row = "<tr><td class='number'></td><td class='control'></td><td class='color'></td><td class='lap'></td><td class='condition'></td><td class='deklaracja'>NO</td></tr>"
+    var table = document.getElementById("table");
     for (i = 0; i < game.count; i++) {
         game.add(i);
-        znacznik.innerHTML += wiersz;
+        table.innerHTML += row;
     }
 
     var table = {
@@ -127,8 +128,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
         controls: document.getElementsByClassName("control"),
         colors: document.getElementsByClassName("color"),
         laps: document.getElementsByClassName("lap"),
-        stans: document.getElementsByClassName("stan"),
-        deklaracjas: document.getElementsByClassName("deklaracja")
+        conditions: document.getElementsByClassName("condition"),
+        choice: document.getElementsByClassName("deklaracja")
     }
 
     function data_update(i) {
@@ -138,10 +139,10 @@ document.addEventListener("DOMContentLoaded", function (e) {
         table.laps[i].innerHTML = game.laps - game.collection[i].lap;
 
         if (game.collection[i].game) {
-            table.stans[i].innerHTML = "W trakcie"
+            table.conditions[i].innerHTML = "W trakcie"
         }
         else {
-            table.stans[i].innerHTML = "Przegrana"
+            table.conditions[i].innerHTML = "Przegrana"
         }
     }
 
@@ -234,8 +235,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
         if (warunek) {
             game.collection[deklarowanie % game.collection.length].control = e.code;
             data_update(deklarowanie % game.collection.length);
-            table.deklaracjas[deklarowanie % game.collection.length].innerHTML = "NO"
-            table.deklaracjas[(deklarowanie + 1) % game.collection.length].innerHTML = "YES"
+            table.choice[deklarowanie % game.collection.length].innerHTML = "NO"
+            table.choice[(deklarowanie + 1) % game.collection.length].innerHTML = "YES"
             deklarowanie++;
         }
     }
@@ -243,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
     clear();
     document.getElementById("start").addEventListener("click", function () {
         document.removeEventListener("keypress", deklaracja)
-        table.deklaracjas[deklarowanie % game.collection.length].innerHTML = "NO"
+        table.choice[deklarowanie % game.collection.length].innerHTML = "NO"
         animation();
     })
 
