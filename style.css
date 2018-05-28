@@ -1,0 +1,21 @@
+#hidden {
+    position: absolute;
+    display: none
+}
+
+#start {
+    position: absolute;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+td {
+    padding: 3px;
+    text-align: center;
+}
